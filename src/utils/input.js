@@ -1,48 +1,51 @@
 import fileCommands from "../commands/fileCommands.js";
 import osCommands from "../commands/osCommands.js";
+import { getAbsolutePath } from "../helpers/getAbsolutePath.js"
 
 export const handleCommand = (command) => {
   const [operation, ...args] = command.split(" ");
+  const pathFrom = getAbsolutePath(args[0] || '');
+  const pathTo = getAbsolutePath(args[1] || '');
 
   switch (operation) {
     case "up":
       fileCommands.goUp(); // ✅
       break;
     case "cd":
-      fileCommands.goToDirectory(args[0]); // ✅
+      fileCommands.goToDirectory(pathFrom); // ✅
       break;
     case "ls":
       fileCommands.getlistFilesAndFolders(); // ✅
       break;
     case "cat":
-      fileCommands.readFile(args[0]); // ✅
+      fileCommands.readFile(pathFrom); // ✅
       break;
     case "add":
-      fileCommands.createFile(args[0]);
+      fileCommands.createFile(pathFrom, args[1]);
       break;
     case "rn":
-      fileCommands.renameFile(args[0], args[1]);
+      fileCommands.renameFile(pathFrom, pathTo);
       break;
     case "cp":
-      fileCommands.copyFile(args[0], args[1]);
+      fileCommands.copyFile(pathFrom, pathTo, args);
       break;
     case "mv":
-      fileCommands.moveFile(args[0], args[1]);
+      fileCommands.moveFile(pathFrom, pathTo);
       break;
     case "rm":
-      fileCommands.deleteFile(args[0]);
+      fileCommands.deleteFile(pathFrom);
       break;
     case "os":
       handleOSCommand(args); // ✅
       break;
     case "hash":
-      fileCommands.calculateHash(args[0]);
+      fileCommands.calculateHash(pathFrom);
       break;
     case "compress":
-      fileCommands.compressFile(args[0], args[1]);
+      fileCommands.compressFile(pathFrom, pathTo);
       break;
     case "decompress":
-      fileCommands.decompressFile(args[0], args[1]);
+      fileCommands.decompressFile(pathFrom, pathTo);
       break;
     case ".exit":
       rl.close();

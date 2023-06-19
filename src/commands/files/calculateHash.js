@@ -1,4 +1,5 @@
-const crypto = import("crypto");
+import fs from 'fs';
+import crypto from 'crypto';
 
 export const calculateHash = (filePath) => {
   const hash = crypto.createHash("sha256");
@@ -7,6 +8,7 @@ export const calculateHash = (filePath) => {
     const fileStream = fs.createReadStream(filePath);
 
     fileStream.on("data", (chunk) => {
+      console.log(chunk);
       hash.update(chunk);
     });
 

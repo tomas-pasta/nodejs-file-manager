@@ -1,42 +1,27 @@
+import {
+  access, constants, createReadStream, createWriteStream
+} from "node:fs";
 import path from "path";
-import fs from "fs";
+import { mkDir } from "./mkDir.js";
 
-export const copyFile = (sourcePath, destinationPath) => {
-  const sourceFilePath = path.join(process.env.CURRENT_DIR, sourcePath);
-  const destinationFilePath = path.join(process.env.CURRENT_DIR, destinationPath);
-  const destinationDir = path.dirname(destinationFilePath);
+export const copyFile = (sourcePath, destinationPath, args) => {
+  const { dir, ext } = path.parse(destinationPath);
+  const hasExtDestinationPath = ext === '';
+  const resolveDirPath = hasExtDestinationPath ? destinationPath : dir;
+  const resolveStreamPath = ext === ''
+    ? path.join(destinationPath, args[0])
+    : destinationPath;
 
-  // Проверяем наличие файла для копирования
-  fs.access(sourceFilePath, fs.constants.F_OK, (err) => {
+  access(sourcePath, constants.R_OK, (err) => {
     if (err) {
-      console.log(`"${sourcePath}" does not exist!`);
+      console.log(`${args[0]} does not exist`);
       return;
     }
 
-    fs.access(destinationDir, fs.constants.F_OK, (err) => {
-      if (err) {
-        fs.mkdir(path.join(destinationDir, destinationPath), { recursive: true }, (err) => {
-          if (err) {
-            return console.error(err.message);
-          }
+    const streamOpen = () => (
+      createReadStream(sourcePath).pipe(createWriteStream(resolveStreamPath))
+    );
 
-          console.log("Directory created successfully!");
-        });
-      }
-    });
-
-    const sourceStream = fs.createReadStream(sourceFilePath);
-    const destinationStream = fs.createWriteStream(destinationFilePath);
-
-    sourceStream.on("error", (error) => {
-      console.log("Ошибка при копировании файла:", error.message);
-      return;
-    });
-
-    sourceStream.pipe(destinationStream);
-
-    sourceStream.on("end", () => {
-      console.log("Файл успешно скопирован");
-    });
+    mkDir(resolveDirPath, streamOpen);
   });
 };

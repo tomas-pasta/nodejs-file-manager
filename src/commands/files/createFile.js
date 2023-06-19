@@ -1,14 +1,14 @@
-import path from "path";
-import fs from "fs";
+import path from "node:path";
+import { writeFile } from "node:fs";
 
-export const createFile = (fileName) => {
-  const filePath = path.join(process.env.CURRENT_DIR, fileName);
+export const createFile = (filePath, content = "") => {
+  const fileNmae = path.basename(filePath);
 
-  try {
-    fs.writeFileSync(filePath, "");
+  writeFile(filePath, content, (err) => {
+    if (err) {
+      console.error(err);
+    }
 
-    console.log("File created successfully");
-  } catch (error) {
-    console.log("Error creating file:", error.message);
-  }
+    console.log(`File ${fileNmae} created!`);
+  });
 }

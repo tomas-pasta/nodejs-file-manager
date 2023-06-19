@@ -1,8 +1,7 @@
 import fs from "fs";
-import path from "path";
 
-export const readFile = (name) => {
-  fs.readFile(path.join(process.env.CURRENT_DIR, name), "utf8", (err, data) => {
+export const readFile = (path) => {
+  fs.readFile(path, "utf8", (err, data) => {
     if (err) {
       console.log(err.message);
     }
