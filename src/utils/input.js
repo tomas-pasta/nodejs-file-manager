@@ -30,7 +30,7 @@ export const handleCommand = (command) => {
       fileCommands.copyFile(pathFrom, pathTo, args); // ✅
       break;
     case "mv":
-      fileCommands.moveFile(pathFrom, pathTo);
+      fileCommands.copyFile(pathFrom, pathTo, args, true);
       break;
     case "rm":
       fileCommands.deleteFile(pathFrom);

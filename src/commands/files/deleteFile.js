@@ -1,14 +1,14 @@
-import path from 'path';
-import fs from "fs";
+import path from "node:path";
+import { unlink } from "node:fs";
 
-export const deleteFile = (filePath) => {
-  const fileToDelete = path.join(process.env.CURRENT_DIR, filePath);
+export const deleteFile = async (sourcePath) => {
+  const { base } = path.parse(sourcePath);
 
-  try {
-    fs.unlinkSync(fileToDelete);
+  unlink(sourcePath, (err) => {
+    if (err) {
+      console.log(`Failed to delete file ${base}.`);
+    }
 
-    console.log("File deleted successfully");
-  } catch (error) {
-    console.log("Error deleting file:", error.message);
-  }
+    console.log(`File ${base} deleted successfully.`);
+  });
 };
