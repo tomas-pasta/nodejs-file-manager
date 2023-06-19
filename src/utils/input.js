@@ -21,13 +21,13 @@ export const handleCommand = (command) => {
       fileCommands.readFile(pathFrom); // ✅
       break;
     case "add":
-      fileCommands.createFile(pathFrom, args[1]);
+      fileCommands.createFile(pathFrom, args[1]); // ✅
       break;
     case "rn":
-      fileCommands.renameFile(pathFrom, pathTo);
+      fileCommands.renameFile(pathFrom, args[1]); // ✅
       break;
     case "cp":
-      fileCommands.copyFile(pathFrom, pathTo, args);
+      fileCommands.copyFile(pathFrom, pathTo, args); // ✅
       break;
     case "mv":
       fileCommands.moveFile(pathFrom, pathTo);
@@ -39,7 +39,7 @@ export const handleCommand = (command) => {
       handleOSCommand(args); // ✅
       break;
     case "hash":
-      fileCommands.calculateHash(pathFrom);
+      fileCommands.calculateHash(pathFrom); // ✅
       break;
     case "compress":
       fileCommands.compressFile(pathFrom, pathTo);
