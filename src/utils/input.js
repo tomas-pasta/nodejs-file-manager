@@ -6,16 +6,16 @@ export const handleCommand = (command) => {
 
   switch (operation) {
     case "up":
-      fileCommands.goUp();
+      fileCommands.goUp(); // ✅
       break;
     case "cd":
-      fileCommands.goToDirectory(args[0]);
+      fileCommands.goToDirectory(args[0]); // ✅
       break;
     case "ls":
-      fileCommands.getlistFilesAndFolders();
+      fileCommands.getlistFilesAndFolders(); // ✅
       break;
     case "cat":
-      fileCommands.readFile(args[0]);
+      fileCommands.readFile(args[0]); // ✅
       break;
     case "add":
       fileCommands.createFile(args[0]);
@@ -33,11 +33,11 @@ export const handleCommand = (command) => {
       fileCommands.deleteFile(args[0]);
       break;
     case "os":
-      fileCommands.handleOSCommand(args);
+      handleOSCommand(args); // ✅
       break;
-    // case "hash":
-    //   fileCommands.calculateHash(args[0]);
-    //   break;
+    case "hash":
+      fileCommands.calculateHash(args[0]);
+      break;
     case "compress":
       fileCommands.compressFile(args[0], args[1]);
       break;
@@ -53,7 +53,7 @@ export const handleCommand = (command) => {
   }
 };
 
-export function handleOSCommand(args) {
+export function handleOSCommand(args) { // ✅
   const osCommand = args[0];
 
   switch (osCommand) {
